@@ -4,6 +4,7 @@ out = "out"
 libs = ["lib"]
 
 remappings = [
+    "foundry-devops = lib/foundry-devops",
     "@openzeppelin/contracts = lib/openzeppelin-contracts/contract",
     "@openzeppelin/contracts-upgradeable = lib/openzeppelin-contracts-upgradeable/contracts",
 ]

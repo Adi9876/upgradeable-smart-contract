@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LICENSE MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -27,7 +27,8 @@ contract ContractV2 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         return 2;
     }
 
-    function setNumber(uint256 _number) external { // number = _number;
+    function setNumber(uint256 _number) external {
+        number = _number;
     }
 
     ////////////////////////
