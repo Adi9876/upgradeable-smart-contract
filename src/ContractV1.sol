@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LICENSE MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
