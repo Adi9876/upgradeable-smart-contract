@@ -1,68 +1,38 @@
-## Foundry
+### Upgradable Smart Contracts
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This project uses **upgradable smart contracts** to allow changes to contract logic without redeploying data or changing the contract address. We use the **UUPS proxy pattern**, supported by OpenZeppelin.
 
-Foundry consists of:
+#### How It Works
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- A **proxy contract** stores all data and forwards calls.
+- A **logic contract** contains the actual implementation.
+- When upgraded, only the logic contract changes — state remains untouched.
 
-## Documentation
+#### Example from official docs
 
-https://book.getfoundry.sh/
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-## Usage
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-### Build
+contract MyContract is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+    uint256 public value;
 
-```shell
-$ forge build
-```
+    function initialize() public initializer {
+        __Ownable_init();
+        __UUPSUpgradeable_init();
+        value = 0;
+    }
 
-### Test
+    function setValue(uint256 newValue) external {
+        value = newValue;
+    }
 
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+}
 ```
 
 ### To get started yourself
